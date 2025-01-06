@@ -17,9 +17,9 @@ import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 //ADDED THE COMMENTS FOR MY REFERENCE LATER AS I JOURNEY INTO MOBILE APPS WORLD
 const IndexScreen = () => {
-    const navigation = useNavigation()
+  //   const navigation = useNavigation()
   
-  const { state, deleteBlogPost, getBlogPosts } = useContext(Context);
+  // const { state, deleteBlogPost, getBlogPosts } = useContext(Context);
 //  useEffect(() =>{
 //   //run this in first render of this page when the app is loaded 
 //   //so that the initial data is loaded when the app starts
@@ -39,12 +39,14 @@ const IndexScreen = () => {
 //   }
 //  }, []) //empty array to ensure getBlogPosts is called once on first render
 
-
+    const navigation = useNavigation()
+  
+  const { state, deleteBlogPost, getBlogPosts } = useContext(Context);
  // Fetch blog posts every time the screen comes into focus
  useFocusEffect(
   useCallback(() => {
     getBlogPosts();
-  }, [state]) // useCallback prevents unnecessary re-renders
+  }, []) // useCallback prevents unnecessary re-renders
 );
 // useEffect(() => {
 //   // Fetch blog posts initially when the component first renders
@@ -77,7 +79,7 @@ return (
                 <Text style={styles.title}>
                   {item.title} - {item.id}
                 </Text>
-                <TouchableOpacity onPress={() => deleteBlogPost(item.id)}>
+                <TouchableOpacity onPress={() => deleteBlogPost(item.id, state)}>
                   <Feather style={styles.icon} name="trash" />
                 </TouchableOpacity>
               </View>
