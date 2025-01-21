@@ -19,9 +19,9 @@ const RootStack = createNativeStackNavigator();
 //Stack navigators  
 const AuthStackNavigator = () => {
   return (
-    <AuthStack.Navigator>
-      <AuthStack.Screen name="SignIn" component={SignInScreen} options={{title: 'Sign In', headerLeft: null}}/>
-      <AuthStack.Screen name="SignUp" component={SignUpScreen} options={{title: 'Sign Up', headerLeft: null}} />
+    <AuthStack.Navigator initialRouteName="SignUp">
+      <AuthStack.Screen name="SignIn" component={SignInScreen} options={{title: 'Sign In', header: () => null}}/>
+      <AuthStack.Screen name="SignUp" component={SignUpScreen} options={{title: 'Sign Up', headerShown: false}} />
     </AuthStack.Navigator>
   );
 }
@@ -29,7 +29,7 @@ const AuthStackNavigator = () => {
 const TrackStackNavigator = () => {
   return (
     <TrackStack.Navigator>
-      <TrackStack.Screen name="TrackList" component={TrackListScreen} options={{title: "Tracks"}} />
+      <TrackStack.Screen name="TrackList" component={TrackListScreen} options={{title: "Tracks", headerShown: false}} />
       <TrackStack.Screen name="TrackDetail" component={TrackDetailScreen} />
     </TrackStack.Navigator>
   );
@@ -38,7 +38,7 @@ const TrackStackNavigator = () => {
 const TabNavigator = () => {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Track" component={TrackStackNavigator} />
+      <Tab.Screen name="Tracks" component={TrackStackNavigator} />
       <Tab.Screen name="Create" component={TrackCreateScreen} />
       <Tab.Screen name="Account" component={AccountScreen} />
     </Tab.Navigator>
@@ -49,8 +49,8 @@ const TabNavigator = () => {
 const RootStackNavigator = () => {
   return (
       <RootStack.Navigator>
-        <RootStack.Screen name="Auth" component={AuthStackNavigator} options={{headerShown: false}}/>
-        <RootStack.Screen name="Tab" component={TabNavigator} />
+        <RootStack.Screen name="Auth" component={AuthStackNavigator} options={{headerShown: false}} /**hide header */ />
+        <RootStack.Screen name="Tabs" component={TabNavigator} options={{headerShown: false}}/>
       </RootStack.Navigator>
   );
 }
