@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 25,
     // alignItems: ""
-    marginBottom: 280,
+    marginBottom: 200,
   },
   links: {
     color: "red",

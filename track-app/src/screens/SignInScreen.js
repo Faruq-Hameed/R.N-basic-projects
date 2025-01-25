@@ -11,7 +11,6 @@ const SignInScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { state,signIn } = useAuthContext();
-  console.log({state}, "Login")
   
   return (
     <View style={styles.container}>
@@ -79,8 +78,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 25,
-    // alignItems: ""
-    marginBottom: 280,
+    marginBottom: 200,
   },
   Input: {
     borderWidth: 2,

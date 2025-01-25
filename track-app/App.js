@@ -11,10 +11,10 @@ import TrackCreateScreen from "./src/screens/TrackCreateScreen";
 import AuthProvider, { useAuthContext } from "./src/contexts/authContext";
 import { getTokenFromStorage } from "./src/helpers/getToken";
 
-const AuthStack = createNativeStackNavigator();
-const TrackStack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
-const RootStack = createNativeStackNavigator();
+const AuthStack = createNativeStackNavigator(); //The contain my auth flow
+const TrackStack = createNativeStackNavigator(); //Part of the main flow
+const Tab = createBottomTabNavigator();//This contains my main screen as tabs after the user is authenticated 
+const RootStack = createNativeStackNavigator(); //The root stack that renders my stack both authenticated and unauthenticated
 
 //Stack navigators
 const AuthStackNavigator = () => {
@@ -23,7 +23,7 @@ const AuthStackNavigator = () => {
       <AuthStack.Screen
         name="SignIn"
         component={SignInScreen}
-        options={{ title: "Sign In", header: () => null }}
+        options={{ title: "Sign In", header: () => null }} //hide the header options like back button and others
       />
       <AuthStack.Screen
         name="SignUp"
@@ -47,7 +47,7 @@ const TrackStackNavigator = () => {
   );
 };
 
-const TabNavigator = () => {
+const TabNavigator = () => { //This navigators will be rendered as tabs in the bottom of the screen
   return (
     <Tab.Navigator>
       <Tab.Screen name="Tracks" component={TrackStackNavigator} />
@@ -72,17 +72,16 @@ const RootStackNavigator = () => {
     loadTokenFromStorage();
   }, []);
 
-  console.log('Loading', state);
   return (
     <RootStack.Navigator>
-      {!state.token ? ( //if not token is available
+      {state.token ? ( //if not token is available then auth flow will be rendered
         <RootStack.Screen
           name="Auth"
           component={AuthStackNavigator}
           options={{ headerShown: false }} /**hide header */
         />
       ) : (
-        <RootStack.Screen
+        <RootStack.Screen //main tabs screen will be rendered if token is available
           name="Tabs"
           component={TabNavigator}
           options={{ headerShown: false }}

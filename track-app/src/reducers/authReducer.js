@@ -1,3 +1,4 @@
+/**Auth reducer */
 export const authReducer = (state, action) => {
   switch (action.type) {
     case "set_token":

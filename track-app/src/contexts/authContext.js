@@ -49,7 +49,7 @@ const AuthProvider = ({ children }) => {
       await AsyncStorage.setItem('authToken', token);
       Alert.alert("success", response.data.message);
       dispatch({ type: "set_token", payload:token });
-      return true
+      return true //added for navigation purposes earlier
     } catch (error) {
       let message = ''
       if(error.response){ // if error response
@@ -73,6 +73,8 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-export const useAuthContext = () => React.useContext(AuthContext); // ✅ 
+/**custom hook to access auth state  */
+export const useAuthContext = () => React.useContext(AuthContext); // ✅ so I will just call useAuthContext anywhere i 
+// need to access the state instead of useContext(AuthContext) everywhere
 
 export default AuthProvider;
