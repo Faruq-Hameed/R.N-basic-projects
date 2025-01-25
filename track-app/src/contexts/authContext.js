@@ -1,12 +1,15 @@
 import React, {useReducer} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Alert } from 'react-native';
+
 import { authReducer } from '../reducers/authReducer';
 import trackerApi from '../apis/trackApi'
-import { Alert } from 'react-native';
 
 const AuthContext = React.createContext();
 const initialState = {
   token: "",
   errorMessage: "",
+  loading: false
 };
 const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
@@ -23,8 +26,10 @@ const AuthProvider = ({ children }) => {
         email,
         phonenumber,
       });
+      const token = response.data.token 
+      await AsyncStorage.setItem('authToken', token);
       Alert.alert("success", response.data.message);
-      dispatch({ type: "set_token", payload: response.data.token });
+      dispatch({ type: "set_token", payload: token});
     } catch (err) {
       //   dispatch({ type: "set_error_message", payload: err.message });
       dispatch({
@@ -40,8 +45,10 @@ const AuthProvider = ({ children }) => {
         email,
         password,
       });
+      const token = response.data.token 
+      await AsyncStorage.setItem('authToken', token);
       Alert.alert("success", response.data.message);
-      dispatch({ type: "set_token", payload: response.data.token });
+      dispatch({ type: "set_token", payload:token });
       return true
     } catch (error) {
       let message = ''
@@ -56,8 +63,11 @@ const AuthProvider = ({ children }) => {
     return false
   };
 
+  const setToken = (token) => {
+    dispatch({ type: "set_token", payload: token });
+  }
   return (
-    <AuthContext.Provider value={{ state, signIn, signUp }}>
+    <AuthContext.Provider value={{ state, signIn, signUp, setToken }}>
       {children}
     </AuthContext.Provider>
   );

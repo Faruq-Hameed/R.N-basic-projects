@@ -8,7 +8,8 @@ import AccountScreen from "./src/screens/AccountScreen";
 import TrackListScreen from "./src/screens/TrackListScreen";
 import TrackDetailScreen from "./src/screens/TrackDetailScreen";
 import TrackCreateScreen from "./src/screens/TrackCreateScreen";
-import AuthProvider from "./src/contexts/authContext";
+import AuthProvider, { useAuthContext } from "./src/contexts/authContext";
+import { getTokenFromStorage } from "./src/helpers/getToken";
 
 const AuthStack = createNativeStackNavigator();
 const TrackStack = createNativeStackNavigator();
@@ -58,18 +59,35 @@ const TabNavigator = () => {
 
 //Root stack navigation
 const RootStackNavigator = () => {
+  const { state, setToken } = useAuthContext();
+
+  React.useEffect(() => {
+    //load the token from storage if available and store in the state
+    const loadTokenFromStorage = async () => {
+      const token = await getTokenFromStorage();
+      if (token) {
+        setToken(token);
+      }
+    };
+    loadTokenFromStorage();
+  }, []);
+
+  console.log('Loading', state);
   return (
     <RootStack.Navigator>
-      <RootStack.Screen
-        name="Auth"
-        component={AuthStackNavigator}
-        options={{ headerShown: false }} /**hide header */
-      />
-      <RootStack.Screen
-        name="Tabs"
-        component={TabNavigator}
-        options={{ headerShown: false }}
-      />
+      {!state.token ? ( //if not token is available
+        <RootStack.Screen
+          name="Auth"
+          component={AuthStackNavigator}
+          options={{ headerShown: false }} /**hide header */
+        />
+      ) : (
+        <RootStack.Screen
+          name="Tabs"
+          component={TabNavigator}
+          options={{ headerShown: false }}
+        />
+      )}
     </RootStack.Navigator>
   );
 };
