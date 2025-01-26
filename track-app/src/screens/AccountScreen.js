@@ -1,13 +1,18 @@
+import { Button, Text } from "@rneui/base";
 import React from "react";
-import { Text, StyleSheet, View, Button } from "react-native";
+import { StyleSheet, View } from "react-native";
+import Spacer from "../components/Spacer";
+import { useAuthContext } from "../contexts/authContext";
 
-const AccountScreen = () =>{
-    return (
-        <View>
-        <Text style={styles.header}>Account Screen</Text>
-        </View>
-    );
-}
+const AccountScreen = () => {
+    const {clearToken}  = useAuthContext();
+  return (
+    <Spacer>
+      <Text h2>Create Track</Text>
+      <Button title="Sign Out" onPress={clearToken}/>
+    </Spacer>
+  );
+};
 
 const styles = StyleSheet.create({});
 

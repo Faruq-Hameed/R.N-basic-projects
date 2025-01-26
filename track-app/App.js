@@ -9,12 +9,12 @@ import TrackListScreen from "./src/screens/TrackListScreen";
 import TrackDetailScreen from "./src/screens/TrackDetailScreen";
 import TrackCreateScreen from "./src/screens/TrackCreateScreen";
 import AuthProvider, { useAuthContext } from "./src/contexts/authContext";
-import { getTokenFromStorage } from "./src/helpers/getToken";
+import { getTokenFromStorage } from "./src/helpers/asyncTokenManager";
 import { ActivityIndicator, Alert } from "react-native";
 
 const AuthStack = createNativeStackNavigator(); //The contain my auth flow
 const TrackStack = createNativeStackNavigator(); //Part of the main flow
-const Tab = createBottomTabNavigator();//This contains my main screen as tabs after the user is authenticated 
+const Tab = createBottomTabNavigator(); //This contains my main screen as tabs after the user is authenticated
 const RootStack = createNativeStackNavigator(); //The root stack that renders my stack both authenticated and unauthenticated
 
 //Stack navigators
@@ -48,10 +48,22 @@ const TrackStackNavigator = () => {
   );
 };
 
-const TabNavigator = () => { //This navigators will be rendered as tabs in the bottom of the screen
+const TabNavigator = () => {
+  //This navigators will be rendered as tabs in the bottom of the screen
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Tracks" component={TrackStackNavigator} />
+    <Tab.Navigator screenOptions={
+      {
+        tabBarLabelStyle:
+        {
+          fontSize: 14, // Font size for the labels
+          fontWeight: "bold", // Make it bold if needed
+        },
+        tabBarActiveTintColor: "tomato", // Active label color
+        tabBarInactiveTintColor: "gray", // Inactive label color
+        tabBarIcon: () => null, // Remove default icons
+      }
+    }>
+      <Tab.Screen name="Tracks" component={TrackStackNavigator} options={{tabBarBadge: 7, }} />
       <Tab.Screen name="Create" component={TrackCreateScreen} />
       <Tab.Screen name="Account" component={AccountScreen} />
     </Tab.Navigator>
@@ -64,28 +76,32 @@ const RootStackNavigator = () => {
 
   // to avoid using auth Screen as flash screen while async storage is still fetching data
   const [loading, setLoading] = React.useState(true); // State to manage loading
+  //An empty screen that render null can be returned instead of the loading screen
 
   React.useEffect(() => {
     //load the token from storage if available and store in the state
     const loadTokenFromStorage = async () => {
-      try{
-             const token = await getTokenFromStorage();
-      if (token) {
-        setToken(token);
+      try {
+        const token = await getTokenFromStorage();
+        if (token) {
+          setToken(token);
+        }
+      } catch (err) {
+        Alert.alert("Error", err.message);
+      } finally {
+        setLoading(false);
       }
-      }
-      catch(err) {
-        Alert.alert('Error', err.message)
-      }
-      finally{
-        setLoading(false); 
-      }
- 
     };
     loadTokenFromStorage();
   }, []);
-if(loading){
-        return <ActivityIndicator size="large" color="#0000ff" style={{margin: "auto"}} />;
+  if (loading) {
+    return (
+      <ActivityIndicator
+        size="large"
+        color="#0000ff"
+        style={{ margin: "auto" }}
+      />
+    );
   }
   return (
     <RootStack.Navigator>
