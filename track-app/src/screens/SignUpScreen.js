@@ -4,9 +4,12 @@ import { Text, Button, Input } from "@rneui/base";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import Spacer from "../components/Spacer";
 import { useAuthContext } from "../contexts/authContext";
+import { useOnWillBlurEvent } from "../hooks/useOnWillBlurEvent";
 
 const SignUpScreen = () => {
   const navigation = useNavigation();
+  const { state, signUp, clearErrorMessage } = useAuthContext();
+  useOnWillBlurEvent(clearErrorMessage);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
       const [phonenumber, setPhonenumber] = useState("");
@@ -19,7 +22,6 @@ const SignUpScreen = () => {
         firstname,
         lastname,
       };
-    const {state, signUp} = useAuthContext()
   return (
     <View style={styles.container}>
       <Spacer>

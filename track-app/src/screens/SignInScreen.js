@@ -11,8 +11,8 @@ const SignInScreen = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { state,signIn, clearErrorMessage } = useAuthContext();
-  const onWillBlur = useOnWillBlurEvent(clearErrorMessage())
+  const { state, signIn, clearErrorMessage } = useAuthContext();
+  useOnWillBlurEvent(clearErrorMessage);
   
   return (
     <View style={styles.container}>
