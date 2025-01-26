@@ -13,29 +13,23 @@ const initialState = {
 };
 const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
-  const signUp = async ({
-    firstname,
-    lastname,
-    email,
-    phonenumber,
-  }) => {
+  const signUp = async (data) => {
+    console.log(data);
     try {
-      const response = await trackerApi.post("/auth/signup", {
-        firstname,
-        lastname,
-        email,
-        phonenumber,
-      });
+      const response = await trackerApi.post("/auth/signup", data);
       const token = response.data.token 
       await AsyncStorage.setItem('authToken', token);
       Alert.alert("success", response.data.message);
       dispatch({ type: "set_token", payload: token});
-    } catch (err) {
-      //   dispatch({ type: "set_error_message", payload: err.message });
-      dispatch({
-        type: "set_error_message",
-        payload: "Something went wrong in signUp",
-      });
+    } catch (error) {
+      let message = ''
+      if(error.response){ // if error response
+        message = error.response.data?.message || "An unknown error occurred from server."
+      }
+      else{ //if network from device is not available
+        message = "Unable to connect. Please try again later."
+      }
+        dispatch({ type: "set_error_message", payload: message });
     }
   };
 
@@ -66,8 +60,12 @@ const AuthProvider = ({ children }) => {
   const setToken = (token) => {
     dispatch({ type: "set_token", payload: token });
   }
+
+  const clearErrorMessage = () =>{
+    dispatch({ type: "clear_error_message"});
+  }
   return (
-    <AuthContext.Provider value={{ state, signIn, signUp, setToken }}>
+    <AuthContext.Provider value={{ state, signIn, signUp, setToken, clearErrorMessage }}>
       {children}
     </AuthContext.Provider>
   );

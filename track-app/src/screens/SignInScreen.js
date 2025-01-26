@@ -5,12 +5,14 @@ import { StyleSheet, View, ActivityIndicator,
 } from "react-native";
 import Spacer from "../components/Spacer";
 import { useAuthContext } from "../contexts/authContext";
+import { useOnWillBlurEvent } from "../hooks/useOnWillBlurEvent";
 
 const SignInScreen = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { state,signIn } = useAuthContext();
+  const { state,signIn, clearErrorMessage } = useAuthContext();
+  const onWillBlur = useOnWillBlurEvent(clearErrorMessage())
   
   return (
     <View style={styles.container}>
@@ -82,9 +84,6 @@ const styles = StyleSheet.create({
   },
   Input: {
     borderWidth: 2,
-  },
-  links: {
-    color: "primary",
   },
   error: {
     color: 'red',

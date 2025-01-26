@@ -10,6 +10,7 @@ import TrackDetailScreen from "./src/screens/TrackDetailScreen";
 import TrackCreateScreen from "./src/screens/TrackCreateScreen";
 import AuthProvider, { useAuthContext } from "./src/contexts/authContext";
 import { getTokenFromStorage } from "./src/helpers/getToken";
+import { ActivityIndicator, Alert } from "react-native";
 
 const AuthStack = createNativeStackNavigator(); //The contain my auth flow
 const TrackStack = createNativeStackNavigator(); //Part of the main flow
@@ -61,20 +62,34 @@ const TabNavigator = () => { //This navigators will be rendered as tabs in the b
 const RootStackNavigator = () => {
   const { state, setToken } = useAuthContext();
 
+  // to avoid using auth Screen as flash screen while async storage is still fetching data
+  const [loading, setLoading] = React.useState(true); // State to manage loading
+
   React.useEffect(() => {
     //load the token from storage if available and store in the state
     const loadTokenFromStorage = async () => {
-      const token = await getTokenFromStorage();
+      try{
+             const token = await getTokenFromStorage();
       if (token) {
         setToken(token);
       }
+      }
+      catch(err) {
+        Alert.alert('Error', err.message)
+      }
+      finally{
+        setLoading(false); 
+      }
+ 
     };
     loadTokenFromStorage();
   }, []);
-
+if(loading){
+        return <ActivityIndicator size="large" color="#0000ff" style={{margin: "auto"}} />;
+  }
   return (
     <RootStack.Navigator>
-      {state.token ? ( //if not token is available then auth flow will be rendered
+      {!state.token ? ( //if not token is available then auth flow will be rendered
         <RootStack.Screen
           name="Auth"
           component={AuthStackNavigator}
