@@ -12,7 +12,6 @@ const TrackListScreen = () => {
   return (
     <View>
       <Text style={styles.header}>Track List Screen</Text>
-      <Button title="signOut" type="clear" onPress={handleSignOut} />
     </View>
   );
 };
