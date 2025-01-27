@@ -11,7 +11,7 @@ import { ActivityIndicator, Alert } from "react-native";
  *
  * This component is responsible for fetching the token from Async Storage and updating the authentication state.
  * It ensures the app does not render the Auth flow or the main Tab flow prematurely, avoiding a " auth or tab screen as flash screen"
- * effect during the token fect process.
+ * effect during the token fetching process.
  *
  * Props:
  * @param {Function} onResolve - A callback function provided by the parent component to be executed 
