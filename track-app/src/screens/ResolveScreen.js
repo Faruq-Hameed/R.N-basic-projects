@@ -4,7 +4,32 @@ import AuthProvider, { useAuthContext } from "../contexts/authContext";
 import { getTokenFromStorage } from "../helpers/asyncTokenManager";
 import { ActivityIndicator, Alert } from "react-native";
 
-/**  ResolveScreen to avoid using auth Screen as flash screen while async storage is still fetching data */
+
+/** ResolveScreen Component
+ * ResolveScreen to avoid using auth Screen as flash screen while async storage is still fetching data */
+/**
+ *
+ * This component is responsible for fetching the token from Async Storage and updating the authentication state.
+ * It ensures the app does not render the Auth flow or the main Tab flow prematurely, avoiding a " auth or tab screen as flash screen"
+ * effect during the token fect process.
+ *
+ * Props:
+ * @param {Function} onResolve - A callback function provided by the parent component to be executed 
+ *                               once the token resolution is complete.
+ *
+ * Behavior:
+ * - While loading, the component displays an `ActivityIndicator`.
+ * - It retrieves the token from Async Storage, updates the authentication context, and notifies the parent when done.
+ * - Once token resolution is complete, the component renders `null`, allowing the parent to decide the next screen.
+ *
+ * Usage Example:
+ * <ResolveScreen onResolve={() => setIsResolved(true)} />
+ *
+ * Notes:
+ * - Ensure the `onResolve` prop is provided for proper integration with the parent component.
+ * - Customize the `ActivityIndicator` styling or behavior if needed.
+ */
+
 const ResolveScreen = ({ onResolve }) => {
   const { setToken } = useAuthContext();
   const [loading, setLoading] = useState(true); // State to manage loading
