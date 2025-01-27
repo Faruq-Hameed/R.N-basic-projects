@@ -27,7 +27,7 @@ const ResolveScreen = ({ onResolve }) => {
     loadTokenFromStorage();
   }, []);
   if (loading) {
-    return ( //if loading, this activity indicator wil
+    return ( //if loading, this activity indicator will be shown
       <ActivityIndicator
         size="large"
         color="#0000ff"
