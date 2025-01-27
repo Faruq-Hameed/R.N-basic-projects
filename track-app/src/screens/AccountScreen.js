@@ -9,9 +9,9 @@ const AccountScreen = () => {
     const {clearToken}  = useAuthContext();
   return (
     //Use safeAreaView to force the screen not go behind status bar
-    <SafeAreaView> 
+    <SafeAreaView style={styles.container}> 
       <Spacer>
-      <Text h2>Create Track</Text>
+      <Text h2 >Create Track</Text>
       <Spacer />
       <Button title="Sign Out" onPress={clearToken}/>
     </Spacer>
@@ -20,6 +20,11 @@ const AccountScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  }
+});
 
 export default AccountScreen;
