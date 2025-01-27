@@ -11,7 +11,7 @@ const AccountScreen = () => {
     //Use safeAreaView to force the screen not go behind status bar
     <SafeAreaView> 
       <Spacer>
-      <Text h2 style={}>Create Track</Text>
+      <Text h2 style={[{margin: "auto"}]}>Create Track</Text>
       <Spacer />
       <Button title="Sign Out" onPress={clearToken}/>
     </Spacer>
