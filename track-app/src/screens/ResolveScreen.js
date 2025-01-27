@@ -14,12 +14,12 @@ import { ActivityIndicator, Alert } from "react-native";
  * effect during the token fetching process from the async storage.
  *
  * Props:
- * @param {Function} onResolve - A callback function provided by the parent component(RootStackNavig) to be executed 
+ * @param {Function} onResolve - A callback function provided by the parent component(RootStackNavigator) to be executed 
  *                               once the token resolution is complete.
  *
  * Behavior:
  * - While loading, the component displays an `ActivityIndicator`.
- * - It retrieves the token from Async Storage, updates the authentication context, and notifies the parent when done.
+ * - It retrieves the token from Async Storage, updates the authentication context, and notifies the parent when done with the onResolve Prop.
  * - Once token resolution is complete, the component renders `null`, allowing the parent to decide the next screen.
  *
  * Usage Example:
