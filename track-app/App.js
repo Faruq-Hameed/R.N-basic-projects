@@ -69,7 +69,7 @@ const TabNavigator = () => {
         options={{ tabBarBadge: 7 }}
       />
       <Tab.Screen name="Create" component={TrackCreateScreen} />
-      <Tab.Screen name="Account" component={AccountScreen} />
+    <Tab.Screen name="Account" component={AccountScreen} options={{headerShown: false}}/>
     </Tab.Navigator>
   );
 };
