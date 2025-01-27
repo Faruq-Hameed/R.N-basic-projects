@@ -7,11 +7,7 @@ import { removeTokenFromStorage } from "../helpers/asyncTokenManager";
 
 const TrackListScreen = () => {
   const { state, setToken } = useAuthContext();
-  const navigation = useNavigation();
-  const handleSignOut = async () => {
-    await removeTokenFromStorage();
-    setToken(null);
-  };
+
 
   return (
     <View>
