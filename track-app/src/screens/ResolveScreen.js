@@ -14,7 +14,7 @@ import { ActivityIndicator, Alert } from "react-native";
  * effect during the token fetching process from the async storage.
  *
  * Props:
- * @param {Function} onResolve - A callback function provided by the parent component to be executed 
+ * @param {Function} onResolve - A callback function provided by the parent component() to be executed 
  *                               once the token resolution is complete.
  *
  * Behavior:
