@@ -13,7 +13,7 @@ const AccountScreen = () => {
       <Spacer>
       <Text h2 style={[{margin: "auto"}]}>Create Track</Text>
       <Spacer />
-      <Button title="Sign Out" onPress={clearToken} type="outline"/>
+      <Button title="Sign Out" onPress={clearToken}/>
     </Spacer>
     </SafeAreaView>
     
