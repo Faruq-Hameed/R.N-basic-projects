@@ -8,6 +8,7 @@ import AccountScreen from "./src/screens/AccountScreen";
 import TrackListScreen from "./src/screens/TrackListScreen";
 import TrackDetailScreen from "./src/screens/TrackDetailScreen";
 import TrackCreateScreen from "./src/screens/TrackCreateScreen";
+import ResolveScreen from "./src/screens/ResolveScreen";
 import AuthProvider, { useAuthContext } from "./src/contexts/authContext";
 import { getTokenFromStorage } from "./src/helpers/asyncTokenManager";
 import { ActivityIndicator, Alert } from "react-native";
@@ -51,19 +52,22 @@ const TrackStackNavigator = () => {
 const TabNavigator = () => {
   //This navigators will be rendered as tabs in the bottom of the screen
   return (
-    <Tab.Navigator screenOptions={
-      {
-        tabBarLabelStyle:
-        {
+    <Tab.Navigator
+      screenOptions={{
+        tabBarLabelStyle: {
           fontSize: 14, // Font size for the labels
           fontWeight: "bold", // Make it bold if needed
         },
         tabBarActiveTintColor: "tomato", // Active label color
         tabBarInactiveTintColor: "gray", // Inactive label color
         tabBarIcon: () => null, // Remove default icons
-      }
-    }>
-      <Tab.Screen name="Tracks" component={TrackStackNavigator} options={{tabBarBadge: 7, }} />
+      }}
+    >
+      <Tab.Screen
+        name="Tracks"
+        component={TrackStackNavigator}
+        options={{ tabBarBadge: 7 }}
+      />
       <Tab.Screen name="Create" component={TrackCreateScreen} />
       <Tab.Screen name="Account" component={AccountScreen} />
     </Tab.Navigator>
@@ -72,36 +76,45 @@ const TabNavigator = () => {
 
 //Root stack navigation
 const RootStackNavigator = () => {
-  const { state, setToken } = useAuthContext();
+  // const { state, setToken } = useAuthContext();
 
-  // to avoid using auth Screen as flash screen while async storage is still fetching data
-  const [loading, setLoading] = React.useState(true); // State to manage loading
-  //An empty screen that render null can be returned instead of the loading screen
+  // // to avoid using auth Screen as flash screen while async storage is still fetching data
+  // const [loading, setLoading] = React.useState(true); // State to manage loading
+  // //An empty screen that render null can be returned instead of the loading screen
 
-  React.useEffect(() => {
-    //load the token from storage if available and store in the state
-    const loadTokenFromStorage = async () => {
-      try {
-        const token = await getTokenFromStorage();
-        if (token) {
-          setToken(token);
-        }
-      } catch (err) {
-        Alert.alert("Error", err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadTokenFromStorage();
-  }, []);
-  if (loading) {
-    return (
-      <ActivityIndicator
-        size="large"
-        color="#0000ff"
-        style={{ margin: "auto" }}
-      />
-    );
+  // React.useEffect(() => {
+  //   //load the token from storage if available and store in the state
+  //   const loadTokenFromStorage = async () => {
+  //     try {
+  //       const token = await getTokenFromStorage();
+  //       if (token) {
+  //         setToken(token);
+  //       }
+  //     } catch (err) {
+  //       Alert.alert("Error", err.message);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  //   loadTokenFromStorage();
+  // }, []);
+  // if (loading) {
+  //   return (
+  //     <ActivityIndicator
+  //       size="large"
+  //       color="#0000ff"
+  //       style={{ margin: "auto" }}
+  //     />
+  //   );
+  // }
+
+  const { state } = useAuthContext(); // to know the flow to render
+  const [isResolved, setIsResolved] = React.useState(false); //This will let us know if the async storage fetching status
+
+  if (!isResolved) {
+    //if the async storage fetching is not yet resolved(completed) which ids the default status
+    return <ResolveScreen onResolve={() => setIsResolved(true)} //once set to true this Screen go off(because of the returned NULL)
+    />;
   }
   return (
     <RootStack.Navigator>
