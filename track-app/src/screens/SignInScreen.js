@@ -1,8 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { Text, Button, Input } from "@rneui/base";
-import { StyleSheet, View
-} from "react-native";
+import { StyleSheet, View } from "react-native";
 import Spacer from "../components/Spacer";
 import { useAuthContext } from "../contexts/authContext";
 import { useOnWillBlurEvent } from "../hooks/useOnWillBlurEvent";
@@ -13,7 +12,7 @@ const SignInScreen = () => {
   const [password, setPassword] = useState("");
   const { state, signIn, clearErrorMessage } = useAuthContext();
   useOnWillBlurEvent(clearErrorMessage);
-  
+
   return (
     <View style={styles.container}>
       <Spacer>
@@ -38,16 +37,17 @@ const SignInScreen = () => {
         value={password}
         onChangeText={setPassword}
       />
-      {state.errorMessage? 
-      <Spacer>
-      <Text h5 style={[styles.error]}>{state.errorMessage}</Text> 
-      </Spacer>
-      : null}
+      {state.errorMessage ? (
+        <Spacer>
+          <Text h5 style={[styles.error]}>
+            {state.errorMessage}
+          </Text>
+        </Spacer>
+      ) : null}
       <Button
         title="Sign In"
-        onPress={
-          async () => {
-          const isSignInTrue = await signIn({ email, password })
+        onPress={async () => {
+          const isSignInTrue = await signIn({ email, password });
           // if (isSignInTrue)  navigation.reset({
           //   //clear the stack and navigate to the Tabs screen
           //   index: 0,
@@ -58,9 +58,7 @@ const SignInScreen = () => {
           //     },
           //   ],
           // })
-          }
-   
-        }
+        }}
       />
       <Spacer />
       <Button
@@ -86,8 +84,8 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   error: {
-    color: 'red',
-  }
+    color: "red",
+  },
 });
 
 export default SignInScreen;

@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { Text, Button, Input } from "@rneui/base";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Spacer from "../components/Spacer";
 import { useAuthContext } from "../contexts/authContext";
 import { useOnWillBlurEvent } from "../hooks/useOnWillBlurEvent";
