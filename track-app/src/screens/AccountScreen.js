@@ -8,7 +8,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const AccountScreen = () => {
     const {clearToken}  = useAuthContext();
   return (
-    //Use safeAreaView to
+    //Use safeAreaView to force the screen not go behind status bar
     <SafeAreaView> 
       <Spacer>
       <Text h2>Create Track</Text>
