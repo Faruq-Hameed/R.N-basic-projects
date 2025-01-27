@@ -27,7 +27,6 @@ const ResolveScreen = ({ onResolve }) => {
     loadTokenFromStorage();
   }, []);
   if (loading) {
-    return <View style={{flex: 1}}></View>
     // return (
     //   <ActivityIndicator
     //     size="large"
