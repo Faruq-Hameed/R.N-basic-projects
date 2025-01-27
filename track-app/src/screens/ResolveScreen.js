@@ -27,13 +27,13 @@ const ResolveScreen = ({ onResolve }) => {
     loadTokenFromStorage();
   }, []);
   if (loading) {
-    // return (
-    //   <ActivityIndicator
-    //     size="large"
-    //     color="#0000ff"
-    //     style={{ margin: "auto" }}
-    //   />
-    // );
+    return (
+      <ActivityIndicator
+        size="large"
+        color="#0000ff"
+        style={{ margin: "auto" }}
+      />
+    );
   }
   return null; // The screen render nothing (i.e another screen will render )once the token resolution is done
 };
