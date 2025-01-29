@@ -8,7 +8,6 @@ import { removeTokenFromStorage } from "../helpers/asyncTokenManager";
 const TrackListScreen = () => {
   const { state, setToken } = useAuthContext();
 
-
   return (
     <View>
       <Text style={styles.header}>Track List Screen</Text>
