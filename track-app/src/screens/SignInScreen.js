@@ -5,6 +5,7 @@ import { StyleSheet, View } from "react-native";
 import Spacer from "../components/Spacer";
 import { useAuthContext } from "../contexts/authContext";
 import { useOnWillBlurEvent } from "../hooks/useOnWillBlurEvent";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const SignInScreen = () => {
   const navigation = useNavigation();
@@ -14,9 +15,9 @@ const SignInScreen = () => {
   useOnWillBlurEvent(clearErrorMessage);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView focusable style={styles.container}>
       <Spacer>
-        <Text h2>Sign Up For Tracker</Text>
+        <Text h2>Sign In For Tracker</Text>
       </Spacer>
       <Spacer />
       <Input
@@ -48,6 +49,7 @@ const SignInScreen = () => {
         title="Sign In"
         onPress={async () => {
           const isSignInTrue = await signIn({ email, password });
+          console.log({ isSignInTrue });
           // if (isSignInTrue)  navigation.reset({
           //   //clear the stack and navigate to the Tabs screen
           //   index: 0,
@@ -69,7 +71,7 @@ const SignInScreen = () => {
         Don't have an account? Go Back to Sign up.
       </Button>
       <Spacer />
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -78,7 +80,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 25,
-    marginBottom: 200,
+    marginBottom: 170,
+    marginTop: 20,
   },
   Input: {
     borderWidth: 2,

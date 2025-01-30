@@ -45,9 +45,11 @@ const AuthProvider = ({ children }) => {
         email,
         password,
       });
-      const token = response.data.token;
+      const data = response.data.data
+      
+      const token = data.token;
       await AsyncStorage.setItem("authToken", token);
-      Alert.alert("success", response.data.message);
+      Alert.alert("success", data.message);
       dispatch({ type: "set_token", payload: token });
       return true; //added for navigation purposes earlier
     } catch (error) {

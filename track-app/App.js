@@ -62,13 +62,14 @@ const TabNavigator = () => {
         tabBarInactiveTintColor: "gray", // Inactive label color
         tabBarIcon: () => null, // Remove default icons
       }}
+      
     >
       <Tab.Screen
         name="Tracks"
         component={TrackStackNavigator}
         options={{ tabBarBadge: 7 }}
       />
-      <Tab.Screen name="Create" component={TrackCreateScreen} />
+      <Tab.Screen name="Create" component={TrackCreateScreen}  options={{headerShown: false}} />
     <Tab.Screen name="Account" component={AccountScreen} options={{headerShown: false}}/>
     </Tab.Navigator>
   );

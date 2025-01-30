@@ -1,6 +1,9 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
 import MapView, { Polyline } from 'react-native-maps';
+import { requestForegroundPermissionsAsync } from 'expo-location';
+
+
 
 const Map = () => {
   let points = []; //temporary demo points
