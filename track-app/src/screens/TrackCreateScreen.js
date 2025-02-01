@@ -16,11 +16,12 @@ const TrackCreateScreen = () => {
     try {
       //Asks the user to grant permissions for location while the app is in the foreground.
       const locationAccess = await requestForegroundPermissionsAsync();
-      console.log({locationAccess})
+      // console.log({locationAccess})
 await watchPositionAsync({ //watch for position changes either per time or meter change
 accuracy: Accuracy.BestForNavigation,
-timeInterval: 5000, //5s
 distanceInterval: 5, // 5m 
+
+timeInterval: 5000, //5s
 },(location)=> {
   console.log({location})
 })
