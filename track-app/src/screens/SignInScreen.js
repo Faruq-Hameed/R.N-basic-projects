@@ -78,10 +78,13 @@ const SignInScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    padding: 25,
-    marginBottom: 170,
-    marginTop: 20,
+    // justifyContent: "top",
+    // padding: 25,
+    // marginBottom: 170,
+    // marginTop: 20,
+    padding: 20,
+    borderWidth: 1,
+
   },
   Input: {
     borderWidth: 2,
