@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -9,9 +9,9 @@ import TrackListScreen from "./src/screens/TrackListScreen";
 import TrackDetailScreen from "./src/screens/TrackDetailScreen";
 import TrackCreateScreen from "./src/screens/TrackCreateScreen";
 import ResolveScreen from "./src/screens/ResolveScreen";
-import AuthProvider, { useAuthContext } from "./src/contexts/authContext";
-import { getTokenFromStorage } from "./src/helpers/asyncTokenManager";
-import { ActivityIndicator, Alert } from "react-native";
+import { AuthProvider } from "./src/contexts/authContext";
+import { useAuthContext } from "./src/hooks/contextHooks";
+import { LocationProvider } from "./src/contexts/locationContext";
 
 const AuthStack = createNativeStackNavigator(); //The contain my auth flow
 const TrackStack = createNativeStackNavigator(); //Part of the main flow
@@ -62,15 +62,22 @@ const TabNavigator = () => {
         tabBarInactiveTintColor: "gray", // Inactive label color
         tabBarIcon: () => null, // Remove default icons
       }}
-      
     >
       <Tab.Screen
         name="Tracks"
         component={TrackStackNavigator}
         options={{ tabBarBadge: 7 }}
       />
-      <Tab.Screen name="Create" component={TrackCreateScreen}  options={{headerShown: false}} />
-    <Tab.Screen name="Account" component={AccountScreen} options={{headerShown: false}}/>
+      <Tab.Screen
+        name="Create"
+        component={TrackCreateScreen}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Account"
+        component={AccountScreen}
+        options={{ headerShown: false }}
+      />
     </Tab.Navigator>
   );
 };
@@ -110,13 +117,18 @@ const RootStackNavigator = () => {
   // }
 
   const { state } = useAuthContext(); // to know the flow to render
-  const [isResolved, setIsResolved] = React.useState(false); //This will let us know if the async storage fetching status
+  const [isResolved, setIsResolved] = useState(false); //This will let us know if the async storage fetching status
 
   if (!isResolved) {
     //if the async storage fetching is not yet resolved(completed) which ids the default status
-    return <ResolveScreen onResolve={() => setIsResolved(true)} //once set to true this Screen go off(because of the returned NULL)
-    />;
+    return (
+      <ResolveScreen
+        onResolve={() => setIsResolved(true)} //once set to true this Screen go off(because of the returned NULL)
+      />
+    );
   }
+  console.log({ state });
+
   return (
     <RootStack.Navigator>
       {!state.token ? ( //if not token is available then auth flow will be rendered
@@ -139,9 +151,11 @@ const RootStackNavigator = () => {
 export default function App() {
   return (
     <AuthProvider>
-      <NavigationContainer>
-        <RootStackNavigator />
-      </NavigationContainer>
+      <LocationProvider>
+        <NavigationContainer>
+          <RootStackNavigator />
+        </NavigationContainer>
+      </LocationProvider>
     </AuthProvider>
   );
 }

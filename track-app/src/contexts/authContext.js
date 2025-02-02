@@ -14,7 +14,6 @@ const initialState = {
 };
 const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
-
   /**Sign Up function, it store token to local and async storage*/
   const signUp = async (data) => {
     try {
@@ -92,8 +91,4 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-/**custom hook to access auth state  */
-export const useAuthContext = () => React.useContext(AuthContext); // ✅ so I will just call useAuthContext anywhere i
-// need to access the state instead of useContext(AuthContext) everywhere
-
-export default AuthProvider;
+export {AuthContext, AuthProvider};

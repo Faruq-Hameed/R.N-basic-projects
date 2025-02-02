@@ -1,3 +1,16 @@
-import axios from 'axios';
+import axios from "axios";
 
-export default axios.create({ baseURL: "https://2151-2c0f-2a80-e8-8410-c5c9-823e-e4a6-7990.ngrok-free.app" });
+const createTrackApi = (token = "") => {
+  return axios.create({
+    baseURL:
+      "https://d615-102-89-85-55.ngrok-free.app",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+};
+export default createTrackApi;
+
+// export default axios.create({
+//   baseURL: "https://d615-102-89-85-55.ngrok-free.app",
+// });

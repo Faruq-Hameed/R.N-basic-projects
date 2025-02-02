@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import AuthProvider, { useAuthContext } from "../contexts/authContext";
+import { useAuthContext } from "../hooks/contextHooks";
 import { getTokenFromStorage } from "../helpers/asyncTokenManager";
 import { ActivityIndicator, Alert } from "react-native";
 

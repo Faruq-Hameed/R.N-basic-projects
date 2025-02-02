@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import { Text, Button, Input } from "@rneui/base";
 import { StyleSheet, View } from "react-native";
 import Spacer from "../components/Spacer";
-import { useAuthContext } from "../contexts/authContext";
+import { useAuthContext } from "../hooks/contextHooks";
+
 import { useOnWillBlurEvent } from "../hooks/useOnWillBlurEvent";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -84,7 +85,6 @@ const styles = StyleSheet.create({
     // marginTop: 20,
     padding: 20,
     borderWidth: 1,
-
   },
   Input: {
     borderWidth: 2,

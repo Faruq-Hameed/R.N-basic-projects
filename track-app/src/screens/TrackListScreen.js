@@ -1,6 +1,7 @@
 import React from "react";
 import { Text, StyleSheet, View, ActivityIndicator } from "react-native";
-import { useAuthContext } from "../contexts/authContext";
+import { useAuthContext } from "../hooks/contextHooks";
+
 import { Button } from "@rneui/base";
 import { useNavigation } from "@react-navigation/native";
 import { removeTokenFromStorage } from "../helpers/asyncTokenManager";

@@ -1,25 +1,43 @@
-import * as Location from 'expo-location';
+import * as Location from "expo-location";
 
-// Define the equivalent of 10 meters in degree units
 const tenMetersWithDegrees = 0.0001;
+let lastTimestamp = Date.now();
+let lastCoords = { latitude: 7.3775, longitude: 3.947 };
 
-/**
- * Generates a mock location object with incremental changes.
- * @param {number} increment - The step count to modify the latitude and longitude.
- * @returns {object} - A simulated location object.
- */
 const getLocation = (increment) => {
+  const newTimestamp = Date.now();
+  const newCoords = {
+    latitude: lastCoords.latitude + increment * tenMetersWithDegrees,
+    longitude: lastCoords.longitude + increment * tenMetersWithDegrees,
+  };
+
+  // Calculate time difference in seconds
+  const timeDiff = (newTimestamp - lastTimestamp) / 1000; // Convert ms to seconds
+
+  // Calculate distance using a simple approximation (not accurate for large distances)
+  const distance =
+    Math.sqrt(
+      Math.pow(newCoords.latitude - lastCoords.latitude, 2) +
+        Math.pow(newCoords.longitude - lastCoords.longitude, 2)
+    ) * 111139; // Convert degrees to meters (approximation)
+
+  const speed = timeDiff > 0 ? distance / timeDiff : 0; // meters per second
+
+  // Update last known position and time
+  lastTimestamp = newTimestamp;
+  lastCoords = newCoords;
+
   return {
-    timestamp: 10000000, // Static timestamp (not dynamic for testing)
+    timestamp: newTimestamp,
     coords: {
-      speed: 0, // Static speed (no movement in this mock)
-      heading: 0, // Static heading (no direction change)
-      accuracy: 5, // Simulated GPS accuracy in meters
-      altitudeAccuracy: 5, // Simulated altitude accuracy in meters
-      altitude: 5, // Fixed altitude value
-      longitude: -122.0312186 + increment * tenMetersWithDegrees, // Increment longitude slightly
-      latitude: 37.33233141 + increment * tenMetersWithDegrees // Increment latitude slightly
-    }
+      speed, // Dynamically calculated speed
+      heading: 0, // Static for now
+      accuracy: 5, // Simulated GPS accuracy
+      altitudeAccuracy: 5,
+      altitude: 5,
+      longitude: newCoords.longitude,
+      latitude: newCoords.latitude,
+    },
   };
 };
 
@@ -27,9 +45,9 @@ let counter = 0;
 
 // Emit a fake location event every 10 seconds to simulate movement
 setInterval(() => {
-  Location.EventEmitter.emit('Expo.locationChanged', {
-    watchId: Location._getCurrentWatchId(), // Get the current location watch ID
-    location: getLocation(counter) // Pass the incremented location
+  Location.EventEmitter.emit("Expo.locationChanged", {
+    watchId: Location._getCurrentWatchId(),
+    location: getLocation(counter),
   });
-  counter++; // Increment counter to simulate movement
-}, 10000); // Runs every 10 seconds
+  counter++;
+}, 5000); // Runs every 10 seconds

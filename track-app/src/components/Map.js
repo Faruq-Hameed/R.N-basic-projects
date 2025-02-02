@@ -1,42 +1,41 @@
-import React from 'react';
-import { Text, StyleSheet } from 'react-native';
-import MapView, { Polyline } from 'react-native-maps';
+import React from "react";
+import { StyleSheet } from "react-native";
+import MapView, { Polyline, Marker } from "react-native-maps";
+import { useLocationContext } from "../hooks/contextHooks";
+import { Text } from "@rneui/base";
 
 const Map = () => {
-  let points = [];
-  for (let i = 0; i < 20; i++) {
-    if (i % 2 === 0) {
-      points.push({
-        latitude: 37.33233 + i * 0.001,
-        longitude: -122.03121 + i * 0.001
-      });
-    } else {
-      points.push({
-        latitude: 37.33233 - i * 0.002,
-        longitude: -122.03121 + i * 0.001
-      });
-    }
+  const { locationState } = useLocationContext();
+  const { latitude, longitude } = locationState.currentLocation;
+  if (!latitude || !longitude) {
+    return <Text h2>Current Location is not available</Text>;
   }
-
   return (
     <MapView
       style={styles.map}
-      initialRegion={{
-        latitude: 37.33233,
-        longitude: -122.03121,
+      region={{
+        // latitude: 37.33233,
+        // longitude: -122.03121,
+        latitude,
+        longitude,
         latitudeDelta: 0.01,
-        longitudeDelta: 0.01
+        longitudeDelta: 0.01,
       }}
     >
-      <Polyline coordinates={points} />
+      <Marker
+        coordinate={{ latitude, longitude }}
+        title="You are here"
+        description="Your current location"
+      />
+      {/* <Polyline coordinates={points} /> */}
     </MapView>
   );
 };
 
 const styles = StyleSheet.create({
   map: {
-    height: 300
-  }
+    height: 300,
+  },
 });
 
 export default Map;

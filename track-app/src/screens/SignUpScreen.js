@@ -3,25 +3,26 @@ import React, { useState } from "react";
 import { Text, Button, Input } from "@rneui/base";
 import { StyleSheet, View } from "react-native";
 import Spacer from "../components/Spacer";
-import { useAuthContext } from "../contexts/authContext";
+import { useAuthContext } from "../hooks/contextHooks";
+
 import { useOnWillBlurEvent } from "../hooks/useOnWillBlurEvent";
 
 const SignUpScreen = () => {
   const navigation = useNavigation();
   const { state, signUp, clearErrorMessage } = useAuthContext();
   useOnWillBlurEvent(clearErrorMessage);
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-      const [phonenumber, setPhonenumber] = useState("");
-      const [firstname, setFirstname] = useState("");
-      const [lastname, setLastname] = useState("");
-      const body = {
-        email,
-        password,
-        phonenumber,
-        firstname,
-        lastname,
-      };
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [phonenumber, setPhonenumber] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const body = {
+    email,
+    password,
+    phonenumber,
+    firstname,
+    lastname,
+  };
   return (
     <View style={styles.container}>
       <Spacer>
@@ -39,7 +40,9 @@ const SignUpScreen = () => {
       />
       {state.errorMessage ? ( //display error message if there was an error during signUp
         <Spacer>
-          <Text h5 style={[styles.error]}>{state.errorMessage} </Text>
+          <Text h5 style={[styles.error]}>
+            {state.errorMessage}{" "}
+          </Text>
         </Spacer>
       ) : null}
       <Button title="Sign Up" onPress={() => signUp(body)} />
@@ -55,7 +58,6 @@ const SignUpScreen = () => {
   );
 };
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -65,8 +67,8 @@ const styles = StyleSheet.create({
     marginBottom: 80,
   },
   error: {
-    color: 'red',
-  }
+    color: "red",
+  },
 });
 
 export default SignUpScreen;
