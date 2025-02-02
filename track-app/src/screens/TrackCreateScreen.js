@@ -1,7 +1,7 @@
 import "../_mockLocation";
 import React, { useEffect, useState } from "react";
 import { Alert, Linking, StyleSheet } from "react-native";
-import { Button, Text } from "@rneui/base";
+import { Button, Input, Text } from "@rneui/base";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   requestForegroundPermissionsAsync,
@@ -16,9 +16,14 @@ import { useOnWillBlurEvent } from "../hooks/useOnWillBlurEvent";
 
 const TrackCreateScreen = () => {
   const [err, setErr] = useState(null);
-  const [location, setLocation] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const {  locationState, trackCurrentLocation, startLocationReading, createNewTrack, clearErrorMessage } = useLocationContext();
+  const [trackName, setTrackName] = useState("");
+  const {
+    locationState,
+    trackCurrentLocation,
+    startLocationReading,
+    createNewTrack,
+    clearErrorMessage,
+  } = useLocationContext();
   useOnWillBlurEvent(clearErrorMessage);
 
   const requestAccessForUserLocation = async () => {
@@ -26,7 +31,7 @@ const TrackCreateScreen = () => {
       //Asks the user to grant permissions for location while the app is in the foreground.
       const { status } = await requestForegroundPermissionsAsync();
       if (status === "granted") {
-        startLocationReading(true);// This will determine if location should be tracked. Not yet implemented
+        startLocationReading(true); // This will determine if location should be tracked. Not yet implemented
         await watchPositionAsync(
           {
             //watch for position changes either per time or meter change
@@ -37,10 +42,14 @@ const TrackCreateScreen = () => {
           },
           (location) => {
             // console.log(location);
-            trackCurrentLocation({coordinates: location.coords,timestamp: location.timestamp });
+            trackCurrentLocation({
+              coords: location.coords,
+              timestamp: location.timestamp,
+            });
           }
         );
-      } else { //if permission not granted redirect the user to app settings
+      } else {
+        //if permission not granted redirect the user to app settings
         Alert.alert(
           "Permission Required",
           "Location access is needed to track your movement. Please enable it in settings.",
@@ -69,13 +78,27 @@ const TrackCreateScreen = () => {
     <SafeAreaView>
       <Text h2>Create a Track</Text>
       <Map />
-      <Button title="Save Tracks" onPress={() => createNewTrack()}/>
-      {locationState.locationErrorMessage?<Text h2>{locationState.locationErrorMessage}</Text>: null }
+      <Input
+        label="Track Name"
+        style={[styles.Input]}
+        autoCapitalize="none"
+        autoCorrect={false}
+        value={trackName}
+        onChangeText={setTrackName}
+      />
+      <Button title="Save Tracks" onPress={() => createNewTrack({name: trackName})} />
+      {locationState.locationErrorMessage ? (
+        <Text h2>{locationState.locationErrorMessage}</Text>
+      ) : null}
       {err ? <Text h2>Location access not granted</Text> : null}
     </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  Input: {
+    borderWidth: 2,
+  },
+});
 
 export default TrackCreateScreen;

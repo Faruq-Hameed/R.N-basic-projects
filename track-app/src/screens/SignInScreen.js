@@ -50,7 +50,6 @@ const SignInScreen = () => {
         title="Sign In"
         onPress={async () => {
           const isSignInTrue = await signIn({ email, password });
-          console.log({ isSignInTrue });
           // if (isSignInTrue)  navigation.reset({
           //   //clear the stack and navigate to the Tabs screen
           //   index: 0,

@@ -50,15 +50,16 @@ export const LocationProvider = ({ children }) => {
   };
 
   /** Add new location to the tracked locations list*/
-  const trackCurrentLocation = ({ coordinates, timestamp }) => {
+  const trackCurrentLocation = ({ coords, timestamp }) => {
     //Get the location and add it to the list of locations in the current track
     dispatch({
       type: "track_current_location",
-      payload: { ...coordinates, timestamp },
+      payload: { ...coords, timestamp },
     });
   };
+  const createNewTrack = async ({ name }) => {
+    console.log({ locations: state.trackedLocations, name });
 
-  const createNewTrack = async (name) => {
     try {
       const response = await trackApi.post("/tracks", {
         locations: state.trackedLocations,
@@ -68,7 +69,18 @@ export const LocationProvider = ({ children }) => {
       Alert.alert("success", data.message);
       return;
     } catch (error) {
-     console.log(error);
+      let message = "An unknown error occurred from the server."; // Default message
+
+      if (Array.isArray(error.response.data?.message)) {
+        // If message is an array, join all messages into a single string
+        message = error.response.data.message.join("\n");
+      } else if (typeof error.response.data?.message === "string") {
+        // If message is a string, use it directly
+        message = error.response.data.message;
+      } else {
+        //if network from device is not available
+        message = "Unable to connect. Please try again later.";
+      }
       dispatch({ type: "set_error_message", payload: message });
     }
     return false;

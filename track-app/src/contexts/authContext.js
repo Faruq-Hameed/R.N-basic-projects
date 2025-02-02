@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
 
 import { authReducer } from "../reducers/authReducer";
-import trackerApi from "../apis/trackApi";
+import createTrackApi from "../apis/trackApi";
 import { removeTokenFromStorage } from "../helpers/asyncTokenManager";
 
 const AuthContext = React.createContext();
@@ -14,6 +14,8 @@ const initialState = {
 };
 const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
+  const trackerApi = createTrackApi(state.token);
+
   /**Sign Up function, it store token to local and async storage*/
   const signUp = async (data) => {
     try {
@@ -44,14 +46,15 @@ const AuthProvider = ({ children }) => {
         email,
         password,
       });
-      const data = response.data.data
-      
+      const data = response.data.data;
+
       const token = data.token;
       await AsyncStorage.setItem("authToken", token);
       Alert.alert("success", data.message);
       dispatch({ type: "set_token", payload: token });
       return true; //added for navigation purposes earlier
     } catch (error) {
+      console.log("error", error);
       let message = "";
       if (error.response) {
         // if error response
@@ -84,11 +87,11 @@ const AuthProvider = ({ children }) => {
   };
   return (
     <AuthContext.Provider
-      value={{ state, signIn, signUp, setToken,clearToken, clearErrorMessage }}
+      value={{ state, signIn, signUp, setToken, clearToken, clearErrorMessage }}
     >
       {children}
     </AuthContext.Provider>
   );
 };
 
-export {AuthContext, AuthProvider};
+export { AuthContext, AuthProvider };
