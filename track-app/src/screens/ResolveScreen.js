@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import { useAuthContext } from "../hooks/contextHooks";
+import { useAuthContext } from "../contexts/authContext";
 import { getTokenFromStorage } from "../helpers/asyncTokenManager";
 import { ActivityIndicator, Alert } from "react-native";
-
 
 /** ResolveScreen Component
  * ResolveScreen to avoid using auth Screen as flash screen while async storage is still fetching data */
@@ -14,7 +13,7 @@ import { ActivityIndicator, Alert } from "react-native";
  * effect during the token fetching process from the async storage.
  *
  * Props:
- * @param {Function} onResolve - A callback function provided by the parent component(RootStackNavigator) to be executed 
+ * @param {Function} onResolve - A callback function provided by the parent component(RootStackNavigator) to be executed
  *                               once the token resolution is complete.
  *
  * Behavior:
@@ -52,7 +51,8 @@ const ResolveScreen = ({ onResolve }) => {
     loadTokenFromStorage();
   }, []);
   if (loading) {
-    return ( //if loading, this activity indicator will be shown
+    return (
+      //if loading, this activity indicator will be shown
       <ActivityIndicator
         size="large"
         color="#0000ff"

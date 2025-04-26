@@ -11,11 +11,13 @@ import {
 } from "expo-location";
 import * as Location from "expo-location";
 import Map from "../components/Map";
-import { useLocationContext } from "../hooks/contextHooks";
+import { useLocationContext } from "../contexts/locationContext";
+
 import { useOnWillBlurEvent } from "../hooks/useOnWillBlurEvent";
+import ErrorBanner from "../components/ErrorBanner";
 
 const TrackCreateScreen = () => {
-  const [err, setErr] = useState(null);
+  const [err, setErr] = useState("");
   const [trackName, setTrackName] = useState("");
   const {
     locationState,
@@ -30,6 +32,11 @@ const TrackCreateScreen = () => {
     try {
       //Asks the user to grant permissions for location while the app is in the foreground.
       const { status } = await requestForegroundPermissionsAsync();
+      // console.log(ap)
+      if (status !== "granted") {
+        setErr("location permission REQUIRED!");
+        return;
+      }
       if (status === "granted") {
         startLocationReading(true); // This will determine if location should be tracked. Not yet implemented
         await watchPositionAsync(
@@ -40,7 +47,7 @@ const TrackCreateScreen = () => {
 
             timeInterval: 5000, //5s
           },
-          (location) => {
+          (location) => { //this location here describes the user actual location
             // console.log(location);
             trackCurrentLocation({
               coords: location.coords,
@@ -59,15 +66,12 @@ const TrackCreateScreen = () => {
           ]
         );
       }
-      // console.log({locationAccess})
-
-      // let location = await Location.getLastKnownPositionAsync({});
-
-      // console.log({location})
-      // let currentLocation = await Location.getCurrentPositionAsync({});
-      // console.log({currentLocation})
     } catch (err) {
-      setErr(err.message);
+      if (__DEV__) {
+        //if dev mode
+        console.error(err);
+      }
+      setErr("Something went wrong internally, please try again.");
     }
   };
   //request access to user location
@@ -86,11 +90,15 @@ const TrackCreateScreen = () => {
         value={trackName}
         onChangeText={setTrackName}
       />
-      <Button title="Save Tracks" onPress={() => createNewTrack({name: trackName})} />
+      <Button
+        title="Save Tracks"
+        onPress={() => createNewTrack({ name: trackName })}
+      />
       {locationState.locationErrorMessage ? (
         <Text h2>{locationState.locationErrorMessage}</Text>
       ) : null}
-      {err ? <Text h2>Location access not granted</Text> : null}
+      {/* {err ? <ErrorBanner message={err} onClear={setErr(null)}/>: null} */}
+      {err ? <Text>{err}</Text>: null}
     </SafeAreaView>
   );
 };

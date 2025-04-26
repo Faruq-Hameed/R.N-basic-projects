@@ -1,8 +1,8 @@
-import { createContext, useReducer } from "react";
+import { createContext, useContext, useReducer } from "react";
 import { Alert } from "react-native";
 import { locationReducer } from "../reducers/locationReducer";
 import createTrackApi from "../apis/trackApi";
-import { useAuthContext } from "../hooks/contextHooks";
+import  {useAuthContext} from './authContext'
 
 export const LocationContext = createContext();
 const intialLocationState = {
@@ -58,13 +58,16 @@ export const LocationProvider = ({ children }) => {
     });
   };
   const createNewTrack = async ({ name }) => {
-    console.log({ locations: state.trackedLocations, name });
+    // console.log({ locations: state.trackedLocations, name });
 
     try {
       const response = await trackApi.post("/tracks", {
         locations: state.trackedLocations,
         name,
-      });
+      }, 
+    {
+      
+    });
       const data = response.data.data;
       Alert.alert("success", data.message);
       return;
@@ -104,3 +107,6 @@ export const LocationProvider = ({ children }) => {
     </LocationContext.Provider>
   );
 };
+
+/** custom hook to access location state*/
+export const useLocationContext = () => useContext(LocationContext);

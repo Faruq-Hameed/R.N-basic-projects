@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useContext, useReducer } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
 
@@ -12,7 +12,7 @@ const initialState = {
   errorMessage: "",
   loading: false,
 };
-const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
   const trackerApi = createTrackApi(state.token);
 
@@ -54,6 +54,11 @@ const AuthProvider = ({ children }) => {
       dispatch({ type: "set_token", payload: token });
       return true; //added for navigation purposes earlier
     } catch (error) {
+      dispatch({ type: "set_token", payload: "TEST TOKEN" }); //ADDED TO TEST 
+
+      // await AsyncStorage.setItem("authToken", 'token');
+      // dispatch({ type: "set_token", payload: 'token' });
+
       console.log("error", error);
       let message = "";
       if (error.response) {
@@ -94,4 +99,8 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-export { AuthContext, AuthProvider };
+
+/**custom hook to access auth state  */
+export const useAuthContext = () => useContext(AuthContext); // ✅ so I will just call useAuthContext() anywhere i
+// need to access the state instead of useContext(AuthContext) everywhere
+

@@ -10,7 +10,7 @@ import TrackDetailScreen from "./src/screens/TrackDetailScreen";
 import TrackCreateScreen from "./src/screens/TrackCreateScreen";
 import ResolveScreen from "./src/screens/ResolveScreen";
 import { AuthProvider } from "./src/contexts/authContext";
-import { useAuthContext } from "./src/hooks/contextHooks";
+import { useAuthContext } from "./src/contexts/authContext";
 import { LocationProvider } from "./src/contexts/locationContext";
 
 const AuthStack = createNativeStackNavigator(); //The contain my auth flow

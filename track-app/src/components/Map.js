@@ -1,14 +1,15 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import MapView, { Polyline, Marker } from "react-native-maps";
-import { useLocationContext } from "../hooks/contextHooks";
+import { useLocationContext } from "../contexts/locationContext";
+
 import { Text } from "@rneui/base";
 
 const Map = () => {
   const { locationState } = useLocationContext();
   const { latitude, longitude } = locationState.currentLocation;
   if (!latitude || !longitude) {
-    return <Text h2>Current Location is not available</Text>;
+    return <Text h2>Current Location is not available</Text>; // INSTEAD RETURN A DEFAULT LOCATION OR A MAP LIKE COMPONENT
   }
   return (
     <MapView

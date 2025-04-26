@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Text, Button, Input } from "@rneui/base";
 import { StyleSheet, View } from "react-native";
 import Spacer from "../components/Spacer";
-import { useAuthContext } from "../hooks/contextHooks";
+import { useAuthContext } from "../contexts/authContext";
 
 import { useOnWillBlurEvent } from "../hooks/useOnWillBlurEvent";
 
