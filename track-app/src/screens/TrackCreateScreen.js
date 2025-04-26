@@ -97,7 +97,7 @@ const TrackCreateScreen = () => {
       {locationState.locationErrorMessage ? (
         <Text h2>{locationState.locationErrorMessage}</Text>
       ) : null}
-      {/* {err ? <ErrorBanner message={err} onClear={setErr(null)}/>: null} */}
+      {/* {err ? <ErrorBanner message={err} onClear={setErr(null)}/>: null} */} 
       {err ? <Text>{err}</Text>: null}
     </SafeAreaView>
   );

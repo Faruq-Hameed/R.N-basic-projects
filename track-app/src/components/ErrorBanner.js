@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from "react-native"; 
+//NOT USED YET
 
 const ErrorBanner = ({ message, onClear }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current; //  an animated value starting at 0
