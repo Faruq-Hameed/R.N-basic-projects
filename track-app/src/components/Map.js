@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { ActivityIndicator, StyleSheet } from "react-native";
 import MapView, { Polyline, Marker } from "react-native-maps";
 import { useLocationContext } from "../contexts/locationContext";
 
@@ -9,7 +9,14 @@ const Map = () => {
   const { locationState } = useLocationContext();
   const { latitude, longitude } = locationState.currentLocation;
   if (!latitude || !longitude) {
-    return <Text h2>Current Location is not available</Text>; // INSTEAD RETURN A DEFAULT LOCATION OR A MAP LIKE COMPONENT
+    return (
+      <ActivityIndicator
+        size="large"
+        color="#0000ff"
+        style={{ margin: "auto" }}
+      />
+    );
+    // return <Text h2>Current Location is not available</Text>; // INSTEAD RETURN A DEFAULT LOCATION OR A MAP LIKE COMPONENT
   }
   return (
     <MapView
