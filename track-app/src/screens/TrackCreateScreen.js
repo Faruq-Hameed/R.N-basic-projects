@@ -15,6 +15,7 @@ import { useLocationContext } from "../contexts/locationContext";
 
 import { useOnWillBlurEvent } from "../hooks/useOnWillBlurEvent";
 import ErrorBanner from "../components/ErrorBanner";
+import { useOnFocusEvent } from "../hooks/useOnFocusEvent";
 
 const TrackCreateScreen = () => {
   const [err, setErr] = useState("");
@@ -32,12 +33,12 @@ const TrackCreateScreen = () => {
     try {
       //Asks the user to grant permissions for location while the app is in the foreground.
       const { status } = await requestForegroundPermissionsAsync();
-      // console.log(ap)
-      if (status !== "granted") {
-        setErr("location permission REQUIRED!");
-        return;
-      }
-      if (status === "granted") {
+      console.log(status)
+      // if (status !== "granted") {
+      //   setErr("location permission REQUIRED!");
+      //   // return;
+      // }
+       if (status === "granted") {
         startLocationReading(true); // This will determine if location should be tracked. Not yet implemented
         await watchPositionAsync(
           {
@@ -75,9 +76,10 @@ const TrackCreateScreen = () => {
     }
   };
   //request access to user location
-  useEffect(() => {
-    requestAccessForUserLocation();
-  }, []);
+  // useEffect(() => {
+  //   requestAccessForUserLocation();
+  // }, []);
+  useOnFocusEvent(requestAccessForUserLocation)
   return (
     <SafeAreaView>
       <Text h2>Create a Track</Text>
@@ -97,8 +99,8 @@ const TrackCreateScreen = () => {
       {locationState.locationErrorMessage ? (
         <Text h2>{locationState.locationErrorMessage}</Text>
       ) : null}
-      {/* {err ? <ErrorBanner message={err} onClear={setErr(null)}/>: null} */} 
-      {err ? <Text>{err}</Text>: null}
+      {err ? <ErrorBanner message={err} onClear={setErr(null)}/>: null} 
+      {/* {err ? <Text>{err}</Text>: null} */}
     </SafeAreaView>
   );
 };

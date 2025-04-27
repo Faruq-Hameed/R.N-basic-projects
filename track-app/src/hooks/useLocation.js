@@ -2,11 +2,13 @@ import {
   requestForegroundPermissionsAsync,
   watchPositionAsync,
 } from "expo-location";
-import { useLocationContext } from "./contextHooks";
+import { useLocationContext } from "../contexts/locationContext";
 import { Linking } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
-import { useCallback } from "react";
-export default () => {
+import { useCallback, useState } from "react";
+
+export default ({ onLocationUpdate, onError }) => { //IMPLEMENTATION NOT YET PERFECT
+  
   const {
     locationState,
     trackCurrentLocation,
@@ -14,11 +16,12 @@ export default () => {
     createNewTrack,
     clearErrorMessage,
   } = useLocationContext();
-
+  const [errorMsg, setErrorMsg] = useState("");
   const requestAccessForUserLocation = async () => {
     try {
       //Asks the user to grant permissions for location while the app is in the foreground.
       const { status } = await requestForegroundPermissionsAsync();
+      console.log({ status });
       if (status === "granted") {
         startLocationReading(true); // This will determine if location should be tracked. Not yet implemented
         await watchPositionAsync(
@@ -56,8 +59,8 @@ export default () => {
       // let currentLocation = await Location.getCurrentPositionAsync({});
       // console.log({currentLocation})
     } catch (err) {
-      setErr(err.message);
-    }
+      setErrorMsg("Something went wrong internally, please try again.");
+      onError && onError(err);    }
   };
   //request access to user location
   useFocusEffect(() => {
@@ -66,5 +69,5 @@ export default () => {
     });
   }, []);
 
-  return [err];
+  return [requestAccessForUserLocation, errorMsg ];
 };
