@@ -7,7 +7,8 @@ import { Text } from "@rneui/base";
 
 const Map = () => {
   const { locationState } = useLocationContext();
-  const { latitude, longitude } = locationState.currentLocation;
+  const { latitude, longitude } = locationState.currentLocation.coords;
+
   if (!latitude || !longitude) {
     return (
       <ActivityIndicator
@@ -33,11 +34,11 @@ const Map = () => {
         title="You are here"
         description="Your current location"
       />
-      <Circle 
-      center={currentLocation.coords}
-      radius={1}
-      strokeColor="rgba(158, 158, 255, 1.0)"
-      fillColor="rgba(158, 158, 255, 0.3)"
+      <Circle
+        center={locationState.currentLocation.coords}
+        radius={15}
+        strokeColor="rgba(158, 158, 255, 1.0)"
+        fillColor="rgba(158, 158, 255, 0.3)"
       />
       {/* <Polyline coordinates={points} /> */}
     </MapView>

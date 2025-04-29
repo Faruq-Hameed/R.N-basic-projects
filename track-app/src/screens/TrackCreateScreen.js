@@ -3,22 +3,14 @@ import React, { useEffect, useState } from "react";
 import { Alert, Linking, StyleSheet } from "react-native";
 import { Button, Input, Text } from "@rneui/base";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {
-  requestForegroundPermissionsAsync,
-  Accuracy,
-  watchPositionAsync,
-  startLocationUpdatesAsync,
-} from "expo-location";
-import * as Location from "expo-location";
 import Map from "../components/Map";
 import { useLocationContext } from "../contexts/locationContext";
 
 import { useOnWillBlurEvent } from "../hooks/useOnWillBlurEvent";
-import ErrorBanner from "../components/ErrorBanner";
-import { useOnFocusEvent } from "../hooks/useOnFocusEvent";
+
+import useLocation from "../hooks/useLocation";
 
 const TrackCreateScreen = () => {
-  const [err, setErr] = useState("");
   const [trackName, setTrackName] = useState("");
   const {
     locationState,
@@ -28,58 +20,7 @@ const TrackCreateScreen = () => {
     clearErrorMessage,
   } = useLocationContext();
   useOnWillBlurEvent(clearErrorMessage);
-
-  const requestAccessForUserLocation = async () => {
-    try {
-      //Asks the user to grant permissions for location while the app is in the foreground.
-      const { status } = await requestForegroundPermissionsAsync();
-      console.log(status)
-      // if (status !== "granted") {
-      //   setErr("location permission REQUIRED!");
-      //   // return;
-      // }
-       if (status === "granted") {
-        startLocationReading(true); // This will determine if location should be tracked. Not yet implemented
-        await watchPositionAsync(
-          {
-            //watch for position changes either per time or meter change
-            accuracy: Accuracy.BestForNavigation,
-            distanceInterval: 5, // 5m
-
-            timeInterval: 5000, //5s
-          },
-          (location) => { //this location here describes the user actual location
-            // console.log(location);
-            trackCurrentLocation({
-              coords: location.coords,
-              timestamp: location.timestamp,
-            });
-          }
-        );
-      } else {
-        //if permission not granted redirect the user to app settings
-        Alert.alert(
-          "Permission Required",
-          "Location access is needed to track your movement. Please enable it in settings.",
-          [
-            { text: "Cancel", style: "cancel" },
-            { text: "Open Settings", onPress: () => Linking.openSettings() },
-          ]
-        );
-      }
-    } catch (err) {
-      if (__DEV__) {
-        //if dev mode
-        console.error(err);
-      }
-      setErr("Something went wrong internally, please try again.");
-    }
-  };
-  //request access to user location
-  // useEffect(() => {
-  //   requestAccessForUserLocation();
-  // }, []);
-  useOnFocusEvent(requestAccessForUserLocation)
+const [err] = useLocation(trackCurrentLocation)
   return (
     <SafeAreaView>
       <Text h2>Create a Track</Text>
@@ -96,11 +37,9 @@ const TrackCreateScreen = () => {
         title="Save Tracks"
         onPress={() => createNewTrack({ name: trackName })}
       />
-      {locationState.locationErrorMessage ? (
-        <Text h2>{locationState.locationErrorMessage}</Text>
-      ) : null}
-      {err ? <ErrorBanner message={err} onClear={setErr(null)}/>: null} 
-      {/* {err ? <Text>{err}</Text>: null} */}
+     
+      {/* {err ? <ErrorBanner message={err} onClear={setErr(null)}/>: null}  */}
+      {err ? <Text>{err}</Text>: null}
     </SafeAreaView>
   );
 };
