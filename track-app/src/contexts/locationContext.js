@@ -7,7 +7,7 @@ import { useAuthContext } from "./authContext";
 export const LocationContext = createContext();
 const intialLocationState = {
   locationErrorMessage: "",
-  readingLocation: false,
+  readingLocation: true,
   currentLocation: {
     //where the pointer will be
     timestamp: 1706500000000,
@@ -47,6 +47,7 @@ export const LocationProvider = ({ children }) => {
   );
   /**Callback to start or stop location reading based on the argument */
   const startLocationReading = (action = true) => {
+    console.log({action})
     //Will be false if the the location permission is stopped or the device cannot track location again
     dispatch({
       type: "start_location_reading",
@@ -56,8 +57,10 @@ export const LocationProvider = ({ children }) => {
 
   /** Add new location to the tracked locations list*/
   const trackCurrentLocation = ({ coords, timestamp }) => {
+    console.log("are we reading location? ", state.readingLocation);
     // console.log("trackCurrentLocation from context is", {coords, timestamp})
     //Get the location and add it to the list of locations in the current track
+    if (!state.readingLocation) return; //i.e don't track again
     dispatch({
       type: "track_current_location",
       payload: { coords, timestamp },

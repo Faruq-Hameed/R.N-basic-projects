@@ -7,11 +7,11 @@ import { Text } from "@rneui/base";
 
 const Map = () => {
   const { locationState } = useLocationContext();
-  console.log(
-    "locationState.currentLocation is ==",
-    locationState.currentLocation
-  );
-  const { latitude , longitude  } = locationState.currentLocation.coords;
+  // console.log(
+  //   "locationState.currentLocation is ==",
+  //   locationState.currentLocation
+  // );
+  const { latitude, longitude } = locationState.currentLocation.coords;
 
   if (!latitude || !longitude) {
     return (
@@ -25,13 +25,13 @@ const Map = () => {
   }
   return (
     <MapView
-    style={styles.map}
-    region={{
-      latitude,
-      longitude,
-      latitudeDelta: 0.01,
-      longitudeDelta: 0.01,
-    }}
+      style={styles.map}
+      region={{
+        latitude,
+        longitude,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
+      }}
     >
       <Marker
         coordinate={{ latitude, longitude }}

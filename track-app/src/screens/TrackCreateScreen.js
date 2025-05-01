@@ -20,7 +20,7 @@ const TrackCreateScreen = () => {
     clearErrorMessage,
   } = useLocationContext();
   // useOnWillBlurEvent(clearErrorMessage);
-  // useOnWillBlurEvent(startLocationReading(false)); //to stop location reading when we navigated from this screen
+  useOnWillBlurEvent(startLocationReading(false)); //to stop location reading when we navigated from this screen
   const [err] = useLocation(trackCurrentLocation);
 
   // console.log({current: locationState.currentLocation})
