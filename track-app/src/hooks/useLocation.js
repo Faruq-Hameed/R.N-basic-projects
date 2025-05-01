@@ -32,15 +32,15 @@ export default (callback) => {
 
             timeInterval: 5000, //5s
           },
-          // callback //invoke the callback
-          (location) => {
-            // callback(location)
-            // console.log("location from use location callback", location);
-            callback({
-              coords: location.coords,
-              timestamp: location.timestamp,
-            });
-          }
+          callback //invoke the callback
+          // (location) => {
+          //   // callback(location)
+          //   // console.log("location from use location callback", location);
+          //   callback({
+          //     coords: location.coords,
+          //     timestamp: location.timestamp,
+          //   });
+          // }
         );
       } else {
         //if permission not granted redirect the user to app settings
@@ -54,7 +54,7 @@ export default (callback) => {
         );
       }
     } catch (err) {
-      setErr( err.message);
+      setErr(err.message);
       onError && onError(err.message);
     }
   };

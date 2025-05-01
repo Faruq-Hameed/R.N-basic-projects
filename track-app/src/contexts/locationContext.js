@@ -42,8 +42,8 @@ export const LocationProvider = ({ children }) => {
   console.log(
     "total state now is tracked now is ... ===....",
     state.trackedLocations.length,
-    "\n current latitude is ",
-    state.currentLocation.latitude
+    "\n current longitude is ",
+    state.currentLocation.longitude
   );
   /**Callback to start or stop location reading based on the argument */
   const startLocationReading = (action = true) => {
