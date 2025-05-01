@@ -40,10 +40,10 @@ export const LocationProvider = ({ children }) => {
   const trackApi = createTrackApi(authState?.token); //I am passing the auth token
   const [state, dispatch] = useReducer(locationReducer, intialLocationState);
   console.log(
-    "total state now is tracked now is ... ===....",
+    "total  tracked now is ===",
     state.trackedLocations.length,
     "\n current longitude is ",
-    state.currentLocation.longitude
+    state.currentLocation.coords.longitude
   );
   /**Callback to start or stop location reading based on the argument */
   const startLocationReading = (action = true) => {
@@ -60,7 +60,7 @@ export const LocationProvider = ({ children }) => {
     //Get the location and add it to the list of locations in the current track
     dispatch({
       type: "track_current_location",
-      payload: { ...coords, timestamp },
+      payload: { coords, timestamp },
     });
   };
   const createNewTrack = async ({ name }) => {
