@@ -7,7 +7,8 @@ import { Text } from "@rneui/base";
 
 const Map = () => {
   const { locationState } = useLocationContext();
-  const { latitude, longitude } = locationState.currentLocation.coords;
+  console.log("locationState.currentLocation.coords is ==", locationState.currentLocation.coords)
+  const { latitude = "9", longitude = 10 } = locationState.currentLocation.coords;
 
   if (!latitude || !longitude) {
     return (

@@ -39,7 +39,7 @@ export const LocationProvider = ({ children }) => {
   const { state: authState } = useAuthContext();
   const trackApi = createTrackApi(authState?.token); //I am passing the auth token
   const [state, dispatch] = useReducer(locationReducer, intialLocationState);
-
+console.log("total state now is tracked now is ... ===....", state.trackedLocations.length)
   /**Callback to start or stop location reading based on the argument */
   const startLocationReading = (action = true) => {
     //Will be false if the the location permission is stopped or the device cannot track location again
@@ -51,6 +51,7 @@ export const LocationProvider = ({ children }) => {
 
   /** Add new location to the tracked locations list*/
   const trackCurrentLocation = ({ coords, timestamp }) => {
+    // console.log("trackCurrentLocation from context is", {coords, timestamp})
     //Get the location and add it to the list of locations in the current track
     dispatch({
       type: "track_current_location",

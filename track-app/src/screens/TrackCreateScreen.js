@@ -19,12 +19,15 @@ const TrackCreateScreen = () => {
     createNewTrack,
     clearErrorMessage,
   } = useLocationContext();
-  useOnWillBlurEvent(clearErrorMessage);
+  // useOnWillBlurEvent(clearErrorMessage);
+  // useOnWillBlurEvent(startLocationReading(false)); //to stop location reading when we navigated from this screen
 const [err] = useLocation(trackCurrentLocation)
+
+// console.log({current: locationState.currentLocation})
   return (
     <SafeAreaView>
       <Text h2>Create a Track</Text>
-      <Map />
+      {/* <Map /> */}
       <Input
         label="Track Name"
         style={[styles.Input]}
