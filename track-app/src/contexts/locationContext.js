@@ -2,7 +2,7 @@ import { createContext, useContext, useReducer } from "react";
 import { Alert } from "react-native";
 import { locationReducer } from "../reducers/locationReducer";
 import createTrackApi from "../apis/trackApi";
-import  {useAuthContext} from './authContext'
+import { useAuthContext } from "./authContext";
 
 export const LocationContext = createContext();
 const intialLocationState = {
@@ -39,7 +39,12 @@ export const LocationProvider = ({ children }) => {
   const { state: authState } = useAuthContext();
   const trackApi = createTrackApi(authState?.token); //I am passing the auth token
   const [state, dispatch] = useReducer(locationReducer, intialLocationState);
-console.log("total state now is tracked now is ... ===....", state.trackedLocations.length)
+  console.log(
+    "total state now is tracked now is ... ===....",
+    state.trackedLocations.length,
+    "\n current latitude is ",
+    state.currentLocation.latitude
+  );
   /**Callback to start or stop location reading based on the argument */
   const startLocationReading = (action = true) => {
     //Will be false if the the location permission is stopped or the device cannot track location again
@@ -62,13 +67,14 @@ console.log("total state now is tracked now is ... ===....", state.trackedLocati
     // console.log({ locations: state.trackedLocations, name });
 
     try {
-      const response = await trackApi.post("/tracks", {
-        locations: state.trackedLocations,
-        name,
-      }, 
-    {
-      
-    });
+      const response = await trackApi.post(
+        "/tracks",
+        {
+          locations: state.trackedLocations,
+          name,
+        },
+        {}
+      );
       const data = response.data.data;
       Alert.alert("success", data.message);
       return;
