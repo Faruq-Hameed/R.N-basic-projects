@@ -47,7 +47,9 @@ let counter = 0;
 setInterval(() => {
   Location.EventEmitter.emit("Expo.locationChanged", {
     watchId: Location._getCurrentWatchId(),
-    location: getLocation(counter),
+    // location: getLocation(counter),
+    location: getLocation(2),
+    
   });
-  counter++;
+  // counter++;
 }, 5000); // Runs every 10 seconds
