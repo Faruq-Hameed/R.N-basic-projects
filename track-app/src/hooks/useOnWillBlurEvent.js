@@ -5,8 +5,6 @@ import React from "react";
 export const useOnWillBlurEvent = (onWillBlur) => {
   useFocusEffect(
     React.useCallback(() => {
-      console.log("we are leaving ...");
-
       // Do something when the screen is focused //NOT USED
       return () => {
         // Do something when the screen is unfocused
