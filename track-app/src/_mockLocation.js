@@ -51,4 +51,4 @@ setInterval(() => {
     // 
   });
   counter++;
-}, 5000); // Runs every 10 seconds
+}, 10000); // Runs every 10 seconds

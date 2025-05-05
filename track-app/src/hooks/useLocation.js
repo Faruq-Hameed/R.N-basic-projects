@@ -17,14 +17,12 @@ export default (callback) => {
     try {
       //Asks the user to grant permissions for location while the app is in the foreground.
       const { status } = await requestForegroundPermissionsAsync();
-      console.log({ status });
-      // if (status !== "granted") {
-      //   console.log({ status });
-      //   throw new Error("Location permission not granted");
-      // }
+      if (status !== "granted") {
+       Alert.alert("Location permission not granted");
+      }
       if (status === "granted") {
         startLocationReading(true); // This will determine if location should be tracked. Not yet implemented
-        await watchPositionAsync(
+       const sub = await watchPositionAsync(
           {
             //watch for position changes either per time or meter change
             accuracy: Accuracy.BestForNavigation,
@@ -32,17 +30,16 @@ export default (callback) => {
 
             timeInterval: 5000, //5s
           },
-          callback //invoke the callback
-          // (location) => {
-          //   // callback(location)
-          //   // console.log("location from use location callback", location);
-          //   callback({
-          //     coords: location.coords,
-          //     timestamp: location.timestamp,
-          //   });
-          // }
+          (location) => {
+            callback({ //use the location as parameter to the callback
+              coords: location.coords,
+              timestamp: location.timestamp,
+            });
+          }
         );
-      } else {
+
+      } 
+      else {
         //if permission not granted redirect the user to app settings
         Alert.alert(
           "Permission Required",
@@ -53,17 +50,11 @@ export default (callback) => {
           ]
         );
       }
-    } catch (err) {
+    }
+     catch (err) {
       setErr(err.message);
-      onError && onError(err.message);
     }
   };
-  //request access to user location
-  // useFocusEffect(() => {
-  //   useCallback(() => {
-  //     requestAccessForUserLocation();
-  //   });
-  // }, []);
   useEffect(() => {
     requestAccessForUserLocation();
   }, []);
