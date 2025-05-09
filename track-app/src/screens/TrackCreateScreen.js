@@ -9,34 +9,20 @@ import { useLocationContext } from "../contexts/locationContext";
 import { useOnWillBlurEvent } from "../hooks/useOnWillBlurEvent";
 
 import useLocation from "../hooks/useLocation";
+import TrackForm from "../components/TrackForm";
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 
 const TrackCreateScreen = () => {
-  const [trackName, setTrackName] = useState("");
-  const {
-    locationState,
-    trackCurrentLocation,
-    createNewTrack,
-  } = useLocationContext();
+  const { locationState, trackCurrentLocation, createNewTrack } =
+    useLocationContext();
   const [err] = useLocation(trackCurrentLocation);
-
+  
+  
   return (
     <SafeAreaView>
       <Text h2>Create a Track</Text>
       <Map />
-      <Input
-        label="Track Name"
-        style={[styles.Input]}
-        autoCapitalize="none"
-        autoCorrect={false}
-        value={trackName}
-        onChangeText={setTrackName}
-      />
-      <Button
-        title="Save Tracks"
-        onPress={() => createNewTrack({ name: trackName })}
-      />
-
-      {/* {err ? <ErrorBanner message={err} onClear={setErr(null)}/>: null}  */}
+      <TrackForm />
       {err ? <Text>{err}</Text> : null}
     </SafeAreaView>
   );

@@ -10,6 +10,8 @@ export const locationReducer = (state, action) => {
         currentLocation: location,
         trackedLocations: [...state.trackedLocations, location],
       };
+    case "change_name":
+      return { ...state, name: action.payload };
     case "set_error_message":
       return { ...state, locationErrorMessage: action.payload };
     default:

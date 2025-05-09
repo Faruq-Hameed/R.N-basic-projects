@@ -1,17 +1,16 @@
-import React, { useContext } from 'react';
-import { Input, Button } from 'react-native-elements';
-import Spacer from './Spacer';
-import { Context as LocationContext } from '../context/LocationContext';
+import React, { useContext } from "react";
+import { Input, Button } from "@rneui/base";
+import Spacer from "./Spacer";
+import { useLocationContext } from "../contexts/locationContext";
+
 
 const TrackForm = () => {
   const {
-    state: { name, recording, locations },
-    startRecording,
-    stopRecording,
-    changeName
-  } = useContext(LocationContext);
-
-  console.log(locations.length);
+    locationState: { name, readingLocation, trackedLocations },
+    startLocationReading,
+    changeName,
+    createNewTrack
+  } = useLocationContext()
 
   return (
     <>
@@ -22,11 +21,17 @@ const TrackForm = () => {
           placeholder="Enter name"
         />
       </Spacer>
-      {recording ? (
-        <Button title="Stop" onPress={stopRecording} />
+      {readingLocation ? (
+        <Button title="Stop" onPress={startLocationReading(false)} />
       ) : (
-        <Button title="Start Recording" onPress={startRecording} />
+        <Button title="Start Recording" onPress={startLocationReading(true)} />
       )}
+
+      <Spacer>
+        {!readingLocation && trackedLocations.length ? (
+          <Button title="Save Recording" onPress={createNewTrack(name)} />
+        ) : null}
+      </Spacer>
     </>
   );
 };

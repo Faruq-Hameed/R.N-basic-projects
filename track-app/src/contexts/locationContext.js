@@ -6,6 +6,7 @@ import { useAuthContext } from "./authContext";
 
 export const LocationContext = createContext();
 const intialLocationState = {
+  name: "Hello",
   locationErrorMessage: "",
   readingLocation: true,
   currentLocation: {
@@ -39,12 +40,6 @@ export const LocationProvider = ({ children }) => {
   const { state: authState } = useAuthContext();
   const trackApi = createTrackApi(authState?.token); //I am passing the auth token
   const [state, dispatch] = useReducer(locationReducer, intialLocationState);
-  console.log(
-    "total  tracked now is ===",
-    state.trackedLocations.length,
-    "\n current longitude is ",
-    state.currentLocation.coords.longitude
-  );
   /**Callback to start or stop location reading based on the argument */
   const startLocationReading = (action = true) => {
     console.log({action})
@@ -66,6 +61,11 @@ export const LocationProvider = ({ children }) => {
       payload: { coords, timestamp },
     });
   };
+
+  const changeName = (name) => {
+    console.log("changeName from context is", name);
+    dispatch({ type: "change_name", payload: name });
+  }
   const createNewTrack = async ({ name }) => {
     // console.log({ locations: state.trackedLocations, name });
 
@@ -111,6 +111,8 @@ export const LocationProvider = ({ children }) => {
         trackCurrentLocation,
         createNewTrack,
         clearErrorMessage,
+        changeName,         
+
       }}
     >
       {children}
