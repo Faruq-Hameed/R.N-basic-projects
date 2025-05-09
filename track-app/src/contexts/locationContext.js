@@ -6,9 +6,9 @@ import { useAuthContext } from "./authContext";
 
 export const LocationContext = createContext();
 const intialLocationState = {
-  name: "Hello",
+  name: "",
   locationErrorMessage: "",
-  readingLocation: true,
+  readingLocation: false,
   currentLocation: {
     //where the pointer will be
     timestamp: 1706500000000,
@@ -40,14 +40,20 @@ export const LocationProvider = ({ children }) => {
   const { state: authState } = useAuthContext();
   const trackApi = createTrackApi(authState?.token); //I am passing the auth token
   const [state, dispatch] = useReducer(locationReducer, intialLocationState);
+  console.log(
+    "total current tracked location is ===",
+    state.trackedLocations.length, {readingLocation: state.readingLocation}
+  );
   /**Callback to start or stop location reading based on the argument */
   const startLocationReading = (action = true) => {
-    console.log({action})
+    console.log('before dispatch',{ action, readingLocation: state.readingLocation });
     //Will be false if the the location permission is stopped or the device cannot track location again
     dispatch({
       type: "start_location_reading",
       payload: action,
     });
+    console.log('after dispatch',{ action, readingLocation: state.readingLocation });
+
   };
 
   /** Add new location to the tracked locations list*/
@@ -65,7 +71,7 @@ export const LocationProvider = ({ children }) => {
   const changeName = (name) => {
     console.log("changeName from context is", name);
     dispatch({ type: "change_name", payload: name });
-  }
+  };
   const createNewTrack = async ({ name }) => {
     // console.log({ locations: state.trackedLocations, name });
 
@@ -111,8 +117,7 @@ export const LocationProvider = ({ children }) => {
         trackCurrentLocation,
         createNewTrack,
         clearErrorMessage,
-        changeName,         
-
+        changeName,
       }}
     >
       {children}

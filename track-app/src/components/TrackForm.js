@@ -3,14 +3,13 @@ import { Input, Button } from "@rneui/base";
 import Spacer from "./Spacer";
 import { useLocationContext } from "../contexts/locationContext";
 
-
 const TrackForm = () => {
   const {
     locationState: { name, readingLocation, trackedLocations },
     startLocationReading,
     changeName,
-    createNewTrack
-  } = useLocationContext()
+    createNewTrack,
+  } = useLocationContext();
 
   return (
     <>
@@ -21,11 +20,17 @@ const TrackForm = () => {
           placeholder="Enter name"
         />
       </Spacer>
-      {readingLocation ? (
-        <Button title="Stop" onPress={startLocationReading(false)} />
+      <Spacer>
+
+      {!readingLocation ? (
+        <Button title="Start Recording" onPress={() =>  startLocationReading(true)} />
       ) : (
-        <Button title="Start Recording" onPress={startLocationReading(true)} />
+        <Button
+          title="Stop Recording"
+          onPress={() => startLocationReading(false)}
+        />
       )}
+      </Spacer>
 
       <Spacer>
         {!readingLocation && trackedLocations.length ? (
