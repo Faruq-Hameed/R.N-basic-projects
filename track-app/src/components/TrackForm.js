@@ -30,6 +30,7 @@ const TrackForm = () => {
           onPress={() => startLocationReading(false)}
         />
       )}
+      
       </Spacer>
 
       <Spacer>

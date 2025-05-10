@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useCallback, useContext, useReducer } from "react";
 import { Alert } from "react-native";
 import { locationReducer } from "../reducers/locationReducer";
 import createTrackApi from "../apis/trackApi";
@@ -42,31 +42,37 @@ export const LocationProvider = ({ children }) => {
   const [state, dispatch] = useReducer(locationReducer, intialLocationState);
   console.log(
     "total current tracked location is ===",
-    state.trackedLocations.length, {readingLocation: state.readingLocation}
+    state.trackedLocations.length,
+    { readingLocation: state.readingLocation }
   );
   /**Callback to start or stop location reading based on the argument */
-  const startLocationReading = (action = true) => {
-    console.log('before dispatch',{ action, readingLocation: state.readingLocation });
+  const startLocationReading = (action) => {
+    console.log("before dispatch", {
+      action,
+      readingLocation: state.readingLocation,
+    });
     //Will be false if the the location permission is stopped or the device cannot track location again
     dispatch({
       type: "start_location_reading",
       payload: action,
     });
-    console.log('after dispatch',{ action, readingLocation: state.readingLocation });
-
+    console.log("after dispatch", {
+      action,
+      readingLocation: state.readingLocation,
+    });
   };
 
   /** Add new location to the tracked locations list*/
-  const trackCurrentLocation = ({ coords, timestamp }) => {
-    console.log("are we reading location? ", state.readingLocation);
-    // console.log("trackCurrentLocation from context is", {coords, timestamp})
-    //Get the location and add it to the list of locations in the current track
-    if (!state.readingLocation) return; //i.e don't track again
-    dispatch({
-      type: "track_current_location",
-      payload: { coords, timestamp },
-    });
-  };
+  const trackCurrentLocation = useCallback(
+    ({ coords, timestamp }) => {
+      console.log("are we reading location? ", state.readingLocation);
+      dispatch({
+        type: "track_current_location",
+        payload: { coords, timestamp },
+      });
+    },
+    [state.readingLocation]
+  );
 
   const changeName = (name) => {
     console.log("changeName from context is", name);

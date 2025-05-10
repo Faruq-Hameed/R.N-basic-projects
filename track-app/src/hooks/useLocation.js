@@ -12,7 +12,10 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 export default (callback) => {
   //IMPLEMENTATION NOT YET PERFECT
   const [err, setErr] = useState("");
-  const { startLocationReading, locationState } = useLocationContext();
+  const {
+    startLocationReading,
+    locationState: { readingLocation },
+  } = useLocationContext();
   const subscriber = useRef(null); //useRef to store the subscription object
   const startTracking = async () => {
     try {
@@ -47,7 +50,11 @@ export default (callback) => {
         console.log("subscribing to location tracking");
         await startTracking();
       }
-      tracking();
+      if (readingLocation) {
+        tracking();
+      } else {
+        subscriber.current?.remove();
+      } //remove the subscription object i.e stop location reading
       return () => {
         console.log("unsubscribing from location tracking");
         //to stop tracking on blur
@@ -55,7 +62,7 @@ export default (callback) => {
         subscriber.current = null; //set it to null because it is no longer needed
         // startLocationReading(false); //This will determine if location should be tracked. Not yet implemented
       };
-    }, [])
+    }, [readingLocation])
   );
 
   // useEffect(() => {
