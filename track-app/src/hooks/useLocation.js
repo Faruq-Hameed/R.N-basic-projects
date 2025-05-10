@@ -53,7 +53,7 @@ export default (callback) => {
         //to stop tracking on blur
         subscriber.current?.remove(); //remove the subscription object i.e stop location reading
         subscriber.current = null; //set it to null because it is no longer needed
-        startLocationReading(false); //This will determine if location should be tracked. Not yet implemented
+        // startLocationReading(false); //This will determine if location should be tracked. Not yet implemented
       };
     }, [])
   );
