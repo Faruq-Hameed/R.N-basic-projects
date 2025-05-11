@@ -14,6 +14,14 @@ export const locationReducer = (state, action) => {
       return { ...state, name: action.payload };
     case "set_error_message":
       return { ...state, locationErrorMessage: action.payload };
+    case "reset_state":
+      return {
+        ...state,
+        trackedLocations: [],
+        readingLocation: false,
+        name: "",
+        locationErrorMessage: "",
+      };
     default:
       return state;
   }

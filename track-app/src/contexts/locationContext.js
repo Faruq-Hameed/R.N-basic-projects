@@ -78,37 +78,9 @@ export const LocationProvider = ({ children }) => {
     console.log("changeName from context is", name);
     dispatch({ type: "change_name", payload: name });
   };
-  const createNewTrack = async ({ name }) => {
-    // console.log({ locations: state.trackedLocations, name });
-
-    try {
-      const response = await trackApi.post(
-        "/tracks",
-        {
-          locations: state.trackedLocations,
-          name,
-        },
-        {}
-      );
-      const data = response.data.data;
-      Alert.alert("success", data.message);
-      return;
-    } catch (error) {
-      let message = "An unknown error occurred from the server."; // Default message
-
-      if (Array.isArray(error.response.data?.message)) {
-        // If message is an array, join all messages into a single string
-        message = error.response.data.message.join("\n");
-      } else if (typeof error.response.data?.message === "string") {
-        // If message is a string, use it directly
-        message = error.response.data.message;
-      } else {
-        //if network from device is not available
-        message = "Unable to connect. Please try again later.";
-      }
-      dispatch({ type: "set_error_message", payload: message });
-    }
-    return false;
+ /**Reset state */
+  const resetState = () => {
+    dispatch({ type: "reset_state" });
   };
 
   const clearErrorMessage = () => {
@@ -124,6 +96,7 @@ export const LocationProvider = ({ children }) => {
         createNewTrack,
         clearErrorMessage,
         changeName,
+        resetState,
       }}
     >
       {children}
