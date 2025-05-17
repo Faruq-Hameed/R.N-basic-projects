@@ -13,7 +13,7 @@ const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <Provider>.
+    <Provider>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerTitle: "Blogs" }}>
           <Stack.Screen
