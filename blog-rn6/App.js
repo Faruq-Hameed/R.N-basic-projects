@@ -12,7 +12,7 @@ import { Feather, EvilIcons } from "@expo/vector-icons";
 const Stack = createStackNavigator();
 
 export default function App() {
-  return (
+  return 
     <Provider>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerTitle: "Blogs" }}>
