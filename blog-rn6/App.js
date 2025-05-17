@@ -9,7 +9,7 @@ import CreateScreen from "./src/screens/CreateScreen";
 import EditScreen from "./src/screens/EditScreen";
 import { Feather, EvilIcons } from "@expo/vector-icons";
 
-const Stack = createStackNavigator()
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
